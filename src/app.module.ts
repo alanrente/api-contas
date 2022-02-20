@@ -1,11 +1,16 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { CartoesController } from './cartoes/cartoes.controller';
+import { CartoesModule } from './cartoes/cartoes.module';
+
+import { ConfigModule } from '@nestjs/config';
+import { getDatabaseExportConfig } from './config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Connection } from 'typeorm';
 
 @Module({
-  imports: [],
-  controllers: [AppController, CartoesController],
-  providers: [AppService],
+  imports: [ConfigModule.forRoot(), TypeOrmModule.forRoot(getDatabaseExportConfig()), CartoesModule],
+  controllers: [],
+  providers: [],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private connection: Connection) {}
+}

@@ -1,41 +1,34 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-
-type Cartao = {
-  id: number;
-  numero: string;
-  bandeira: string;
-  validade: string;
-};
-
-const _cartoes: Cartao[] = [
-  {
-    id: 1,
-    numero: '1234 5678 9012 3456',
-    bandeira: 'visa',
-    validade: '10/20',
-  },
-  {
-    id: 2,
-    numero: '1234 5678 9012 5050',
-    bandeira: 'mastercard',
-    validade: '10/25',
-  },
-];
+import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { CartoesService } from './cartoes.service';
+import { CreateCartoeDto } from './dto/create-cartoe.dto';
+import { UpdateCartoeDto } from './dto/update-cartoe.dto';
 
 @Controller('cartoes')
 export class CartoesController {
+  constructor(private readonly cartoesService: CartoesService) {}
+
+  @Post()
+  create(@Body() createCartoeDto: CreateCartoeDto) {
+    return this.cartoesService.create(createCartoeDto);
+  }
+
   @Get()
-  obterTodos(): Cartao[] {
-    return _cartoes;
+  findAll() {
+    return this.cartoesService.findAll();
   }
 
   @Get(':id')
-  obterPorId(@Param('id') id: number): Cartao {
-    return _cartoes.find((cartao) => cartao.id === id);
+  findOne(@Param('id') id: string) {
+    return this.cartoesService.findOne(+id);
   }
 
-  @Post()
-  criar(@Body() cartao: Cartao): Cartao {
-    return cartao;
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateCartoeDto: UpdateCartoeDto) {
+    return this.cartoesService.update(+id, updateCartoeDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.cartoesService.remove(+id);
   }
 }

@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
+import { ErrorHandler } from '@nestjs/common/interfaces';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ErrorRequestHandler } from 'express';
 import { Repository } from 'typeorm';
 import { CreateCartoeDto } from './dto/create-cartoe.dto';
 import { UpdateCartoeDto } from './dto/update-cartoe.dto';
@@ -9,23 +11,34 @@ import { CartaoEntity } from './entities/cartao.entity';
 @Injectable()
 export class CartoesService {
   constructor(@InjectRepository(CartaoEntity) private repository: Repository<CartaoEntity>) {}
-  create(createCartoeDto: CreateCartoeDto) {
-    return 'This action adds a new cartoe';
+
+  async create(createCartoeDto: CreateCartoeDto) {
+    console.log(createCartoeDto);
+    return await this.repository.save(createCartoeDto);
   }
 
-  findAll() {
+  findAll(): Promise<CartaoEntity[]> {
     return this.repository.find();
   }
 
-  findOne(id: number) {
-    return `SELECT * FROM contas.cartoes WHERE id = ${id}`;
+  async findOne(id: number): Promise<CartaoEntity> {
+    const cartao = await this.repository.findOne(id);
+
+    if (!cartao) throw new Error('Cartão não encontrado');
+
+    return cartao;
   }
 
-  update(id: number, updateCartoeDto: UpdateCartoeDto) {
-    return `This action updates a #${id} cartoe`;
+  async update(id: number, updateCartoeDto: UpdateCartoeDto) {
+    this.findOne(id);
+    try {
+      await this.repository.update(id, updateCartoeDto);
+    } catch (error) {
+      throw new Error('Cartão não pode ser atualizado');
+    }
   }
 
   remove(id: number) {
-    return `This action removes a #${id} cartoe`;
+    return `This action removes a #${id} cartão`;
   }
 }

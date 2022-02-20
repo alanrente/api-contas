@@ -1,4 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import { Response } from 'express';
 import { CartoesService } from './cartoes.service';
 import { CreateCartoeDto } from './dto/create-cartoe.dto';
 import { UpdateCartoeDto } from './dto/update-cartoe.dto';
@@ -18,13 +19,23 @@ export class CartoesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cartoesService.findOne(+id);
+  async findOne(@Res() resp: Response, @Param('id') id: string) {
+    try {
+      const card = await this.cartoesService.findOne(+id);
+
+      resp.status(200).send(card);
+    } catch (error) {
+      resp.status(400).send({ message: error.message });
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCartoeDto: UpdateCartoeDto) {
-    return this.cartoesService.update(+id, updateCartoeDto);
+  async update(@Res() resp: Response, @Param('id') id: string, @Body() updateCartoeDto: UpdateCartoeDto) {
+    try {
+      await this.cartoesService.update(+id, updateCartoeDto);
+    } catch (error) {
+      resp.status(400).send({ message: error.message });
+    }
   }
 
   @Delete(':id')

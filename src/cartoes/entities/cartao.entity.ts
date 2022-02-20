@@ -8,8 +8,8 @@ export class CartaoEntity {
   bank: string;
   @Column({ type: 'varchar' })
   final_number: string;
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'date' })
   vencimento: string;
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'date' })
   buy_date_best: string;
 }

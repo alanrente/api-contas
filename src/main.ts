@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
@@ -13,7 +13,8 @@ async function bootstrap() {
 
   await app.listen(port);
 
-  console.log(process.env.LOCALHOST + process.env.PORT);
-  console.log('NODE_ENV: ', process.env.NODE_ENV);
+  Logger.log(`Server running on ${process.env.LOCALHOST + port}`, 'Bootstrap');
+  Logger.log(`Environment: ${process.env.NODE_ENV}`, 'Bootstrap');
+  Logger.log(`Database: ${process.env.DB_HOST}`, 'Bootstrap');
 }
 bootstrap();

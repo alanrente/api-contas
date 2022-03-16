@@ -5,9 +5,10 @@ import { ConfigModule } from '@nestjs/config';
 import { getDatabaseExportConfig } from './config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
+import { SendGridModule } from './send-grid/send-grid.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), TypeOrmModule.forRoot(getDatabaseExportConfig()), CartoesModule],
+  imports: [ConfigModule.forRoot(), TypeOrmModule.forRoot(getDatabaseExportConfig()), CartoesModule, SendGridModule],
   controllers: [],
   providers: [],
 })

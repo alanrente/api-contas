@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Logger } from '@nestjs/common';
 import { Response } from 'express';
 import { CartoesService } from './cartoes.service';
 import { CreateCartoeDto } from './dto/create-cartoe.dto';
@@ -25,6 +25,7 @@ export class CartoesController {
 
       resp.status(200).send(card);
     } catch (error) {
+      Logger.error(error.message);
       resp.status(400).send({ message: error.message });
     }
   }
@@ -33,8 +34,10 @@ export class CartoesController {
   async update(@Res() resp: Response, @Param('id') id: string, @Body() updateCartoeDto: UpdateCartoeDto) {
     try {
       await this.cartoesService.update(+id, updateCartoeDto);
+      resp.status(200).send();
     } catch (error) {
-      resp.status(400).send({ message: error.message });
+      Logger.error(error.message);
+      resp.status(400).send({ message: 'Cartão não pode ser atualizado' });
     }
   }
 

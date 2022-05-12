@@ -5,11 +5,11 @@ export class CartaoEntity {
   @Column({ type: 'integer', name: 'id', primary: true, nullable: true })
   id: number;
   @Column({ type: 'varchar' })
-  bank: string;
-  @Column({ type: 'varchar' })
-  final_number: string;
-  @Column({ type: 'date' })
-  vencimento: string;
-  @Column({ type: 'date' })
-  buy_date_best: string;
+  nome: string;
+  @Column({ type: 'integer' })
+  dia_vencimento: number;
+  @Column({ type: 'varchar', length: 4 })
+  final_numero: string;
+  @Column({ type: 'varchar', nullable: true })
+  obs: string;
 }

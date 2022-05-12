@@ -34,7 +34,7 @@ export class CartoesService {
     try {
       await this.repository.update(id, updateCartoeDto);
     } catch (error) {
-      throw new Error('Cartão não pode ser atualizado');
+      throw new Error(error.message);
     }
   }
 

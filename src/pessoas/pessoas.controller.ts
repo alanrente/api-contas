@@ -9,8 +9,15 @@ export class PessoasController {
   constructor(private readonly pessoasService: PessoasService) {}
 
   @Post()
-  create(@Body() createPessoaDto: CreatePessoaDto) {
-    return this.pessoasService.create(createPessoaDto);
+  create(@Body() createPessoaDto: CreatePessoaDto, @Res() res: Response) {
+    try {
+      this.pessoasService.create(createPessoaDto);
+
+      return res.send({ status: 201, message: 'Pessoa criada com sucesso' });
+    } catch (error) {
+      Logger.error(error.message);
+      return res.status(500).send({ status: 500, message: error.message });
+    }
   }
 
   @Get()

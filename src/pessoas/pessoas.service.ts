@@ -10,11 +10,11 @@ export class PessoasService {
   constructor(@InjectRepository(PessoaEntity) private repository: Repository<PessoaEntity>) {}
 
   async create(createPessoaDto: CreatePessoaDto) {
-    return `This action add an pessoa ${JSON.stringify(createPessoaDto)}`;
+    return this.repository.save(createPessoaDto);
   }
 
   async findAll() {
-    return await this.repository.find({ select: ['id', 'nome', 'apelido'] });
+    return await this.repository.find({ select: ['id', 'nome', 'apelido'], order: { id: 'ASC' } });
   }
 
   async findOne(id: number) {

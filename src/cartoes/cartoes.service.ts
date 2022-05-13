@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
-import { ErrorHandler } from '@nestjs/common/interfaces';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ErrorRequestHandler } from 'express';
 import { Repository } from 'typeorm';
 import { CreateCartoeDto } from './dto/create-cartoe.dto';
 import { UpdateCartoeDto } from './dto/update-cartoe.dto';

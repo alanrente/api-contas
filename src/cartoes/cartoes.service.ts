@@ -15,7 +15,7 @@ export class CartoesService {
   }
 
   findAll(): Promise<CartaoEntity[]> {
-    return this.repository.find();
+    return this.repository.find({ order: { id: 'ASC' } });
   }
 
   async findOne(id: number): Promise<CartaoEntity> {

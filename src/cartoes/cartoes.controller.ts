@@ -15,6 +15,7 @@ export class CartoesController {
 
   @Get()
   findAll() {
+    // TODO: Implementar
     return this.cartoesService.findAll();
   }
 

@@ -1,9 +1,9 @@
 import { Optional } from '@nestjs/common';
 
 export class CreateCartoeDto {
-  bank: string;
-  final_number: string;
-  vencimento: string;
+  nome: string;
+  final_numero: string;
+  dia_vencimento: number;
   @Optional()
-  buy_date_best: string;
+  obs: string;
 }

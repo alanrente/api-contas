@@ -1,8 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
-import { ErrorHandler } from '@nestjs/common/interfaces';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ErrorRequestHandler } from 'express';
 import { Repository } from 'typeorm';
 import { CreateCartoeDto } from './dto/create-cartoe.dto';
 import { UpdateCartoeDto } from './dto/update-cartoe.dto';
@@ -34,7 +31,7 @@ export class CartoesService {
     try {
       await this.repository.update(id, updateCartoeDto);
     } catch (error) {
-      throw new Error('Cartão não pode ser atualizado');
+      throw new Error(error.message);
     }
   }
 

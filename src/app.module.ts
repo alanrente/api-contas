@@ -6,9 +6,10 @@ import { getDatabaseExportConfig } from './config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { PessoasModule } from './pessoas/pessoas.module';
+import { GastosModule } from './gastos/gastos.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), TypeOrmModule.forRoot(getDatabaseExportConfig()), CartoesModule, PessoasModule],
+  imports: [ConfigModule.forRoot(), TypeOrmModule.forRoot(getDatabaseExportConfig()), CartoesModule, PessoasModule, GastosModule],
   controllers: [],
   providers: [],
 })

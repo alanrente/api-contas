@@ -33,6 +33,11 @@ export class GastosController {
     return this.gastosService.findAll();
   }
 
+  @Get('fatura-mes')
+  findAllRelations() {
+    return this.gastosService.findAllCurrentInvoice();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.gastosService.findOne(+id);

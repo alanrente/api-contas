@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
 import { CreateGastoDto } from './dto/create-gasto.dto';
+import { Fatura } from './dto/fatura.dto';
 import { UpdateGastoDto } from './dto/update-gasto.dto';
 import { GastosEntity } from './entities/gasto.entity';
 
@@ -19,13 +20,21 @@ export class GastosService {
   }
 
   createMany(createManyGastoDto: CreateGastoDto[]) {
-    return this.gastosRepository.query(`call contas2.create_many_gastos('${JSON.stringify(createManyGastoDto)}')`);
+    return this.gastosRepository.query(
+      `call ${process.env.DB_SCHEMA}.create_many_gastos('${JSON.stringify(createManyGastoDto)}')`,
+    );
   }
 
   findAll() {
     const data = new Date();
     console.log(data.getUTCDay());
     return this.gastosRepository.find();
+  }
+
+  async findAllCurrentInvoice() {
+    const fatura_mes: Fatura[] = await this.gastosRepository.query(`select * from ${process.env.DB_SCHEMA}.fatura_mes`);
+
+    return fatura_mes.map((gasto) => ({ ...gasto, valor: Number(gasto.valor) }));
   }
 
   findOne(id: number) {

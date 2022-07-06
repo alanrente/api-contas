@@ -19,7 +19,7 @@ export class GastosController {
   }
 
   @Post('many')
-  async teste(@Body() arrayJson: CreateGastoDto[], @Res() res: Response) {
+  async createMany(@Body() arrayJson: CreateGastoDto[], @Res() res: Response) {
     try {
       await this.gastosService.createMany(arrayJson);
       return res.status(201).json({ message: 'Gastos criados com sucesso' }).end();
@@ -33,7 +33,7 @@ export class GastosController {
     return this.gastosService.findAll();
   }
 
-  @Get('fatura-mes')
+  @Get('/fatura-mes')
   findAllRelations() {
     return this.gastosService.findAllCurrentInvoice();
   }

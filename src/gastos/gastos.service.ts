@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
@@ -37,8 +37,12 @@ export class GastosService {
     return fatura_mes.map((gasto) => ({ ...gasto, valor: Number(gasto.valor) }));
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} gasto`;
+  async findOne(id: number) {
+    const user = await this.gastosRepository.findOne({ where: { id: id } });
+
+    if (!user) throw new NotFoundException('Nenhum gasto encontrado');
+
+    return user;
   }
 
   update(id: number, updateGastoDto: UpdateGastoDto) {

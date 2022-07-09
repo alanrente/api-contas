@@ -19,7 +19,7 @@ export class CartoesService {
   }
 
   async findOne(id: number): Promise<CartaoEntity> {
-    const cartao = await this.repository.findOne(id);
+    const cartao = await this.repository.findOne({ where: { id } });
 
     if (!cartao) throw new Error('Cartão não encontrado');
 

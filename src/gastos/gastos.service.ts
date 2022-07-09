@@ -25,10 +25,10 @@ export class GastosService {
     );
   }
 
-  findAll() {
+  async findAll() {
     const data = new Date();
     console.log(data.getUTCDay());
-    return this.gastosRepository.find();
+    return await this.gastosRepository.find({ select: { id: true } });
   }
 
   async findAllCurrentInvoice() {

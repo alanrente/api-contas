@@ -5,7 +5,7 @@ import { CartoesModule } from './cartoes/cartoes.module';
 import { ConfigModule } from '@nestjs/config';
 import { getDatabaseExportConfig } from './config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { PessoasModule } from './pessoas/pessoas.module';
 import { GastosModule } from './gastos/gastos.module';
 import { AuthModule } from './auth/auth.module';
@@ -25,5 +25,5 @@ import { UsersModule } from './users/users.module';
   providers: [],
 })
 export class AppModule {
-  constructor(private connection: Connection) {}
+  constructor(private dataSource: DataSource) {}
 }

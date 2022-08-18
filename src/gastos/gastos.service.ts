@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { validate } from 'class-validator';
-import { Repository } from 'typeorm';
+import { PessoaEntity } from 'pessoas/entities/pessoa.entity';
+import { DataSource, Repository } from 'typeorm';
 import { CreateGastoDto } from './dto/create-gasto.dto';
 import { Fatura } from './dto/fatura.dto';
 import { UpdateGastoDto } from './dto/update-gasto.dto';
@@ -9,7 +10,10 @@ import { GastosEntity } from './entities/gasto.entity';
 
 @Injectable()
 export class GastosService {
-  constructor(@InjectRepository(GastosEntity) private gastosRepository: Repository<GastosEntity>) {}
+  constructor(
+    @InjectRepository(GastosEntity) private gastosRepository: Repository<GastosEntity>,
+    private dataSource: DataSource,
+  ) {}
 
   create(createGastoDto: CreateGastoDto) {
     if (Array.isArray(createGastoDto)) throw Error('createGastoDto must be an object');
@@ -26,9 +30,33 @@ export class GastosService {
   }
 
   async findAll() {
-    const data = new Date();
-    console.log(data.getUTCDay());
-    return await this.gastosRepository.find({ select: { id: true } });
+    // return await this.gastosRepository.find();
+
+    // return await this.dataSource.getRepository(GastosEntity).find({
+    //   relations: {
+    //     pessoa_id: true,
+    //   },
+    // });
+
+    return await this.dataSource
+      .getRepository(GastosEntity)
+      .createQueryBuilder('gasto')
+      .select(['gasto', 'pessoa.nome', 'cartao.nome', 'cartao.id'])
+      .leftJoin('gasto.pessoa_id', 'pessoa')
+      .leftJoin('gasto.cartao_id', 'cartao')
+      .getMany();
+
+    // return await this.dataSource
+    //   .getRepository(PessoaEntity)
+    //   .createQueryBuilder('pessoa')
+    //   .select(['pessoa.nome'])
+    //   .leftJoinAndSelect(
+    //     (subQuery) =>
+    //       subQuery.select(['gasto.descricao', 'gasto.pessoa_id', 'gasto.valor']).from(GastosEntity, 'gasto'),
+    //     'gasto',
+    //     'pessoa.id = gasto.pessoa_id',
+    //   )
+    //   .getRawMany();
   }
 
   async findAllCurrentInvoice() {

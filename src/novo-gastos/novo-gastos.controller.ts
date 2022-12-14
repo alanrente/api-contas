@@ -1,15 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
 import { NovoGastosService } from './novo-gastos.service';
 import { CreateNovoGastoDto } from './dto/create-novo-gasto.dto';
 import { UpdateNovoGastoDto } from './dto/update-novo-gasto.dto';
+import { Response } from 'express';
 
 @Controller('novo-gastos')
 export class NovoGastosController {
   constructor(private readonly novoGastosService: NovoGastosService) {}
 
   @Post()
-  create(@Body() createNovoGastoDto: CreateNovoGastoDto) {
-    return this.novoGastosService.create(createNovoGastoDto);
+  async create(@Body() createNovoGastoDto: CreateNovoGastoDto, @Res() res: Response) {
+    return this.novoGastosService
+      .create(createNovoGastoDto)
+      .then(({ raw }) => {
+        res.send(raw);
+      })
+      .catch((err) => res.status(500).send(err));
   }
 
   @Get()

@@ -10,6 +10,7 @@ import { PessoasModule } from './pessoas/pessoas.module';
 import { GastosModule } from './gastos/gastos.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { NovoGastosModule } from './novo-gastos/novo-gastos.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UsersModule } from './users/users.module';
     GastosModule,
     AuthModule,
     UsersModule,
+    NovoGastosModule,
   ],
   controllers: [AppController],
   providers: [],

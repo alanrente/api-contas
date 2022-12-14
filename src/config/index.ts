@@ -10,7 +10,7 @@ export function getDatabaseExportConfig(): TypeOrmModuleOptions {
     database: process.env.DB_DATABASE,
     schema: process.env.DB_SCHEMA,
     entities: [__dirname + '/../**/*.entity.{js,ts}'],
-    synchronize: false,
+    synchronize: true,
     // autoLoadEntities: true,
   };
 }

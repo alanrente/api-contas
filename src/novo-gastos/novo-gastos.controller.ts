@@ -12,10 +12,8 @@ export class NovoGastosController {
   async create(@Body() createNovoGastoDto: CreateNovoGastoDto, @Res() res: Response) {
     return this.novoGastosService
       .create(createNovoGastoDto)
-      .then(({ raw }) => {
-        res.send(raw);
-      })
-      .catch((err) => res.status(500).send(err));
+      .then((result) => res.status(201).json(result))
+      .catch((err) => res.status(500).json(err));
   }
 
   @Get()

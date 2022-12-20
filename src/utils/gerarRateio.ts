@@ -13,7 +13,15 @@ export class GerarRateio {
   }
 
   gerarRateio() {
-    return this.executar().rateio;
+    const rateios = this.executar().rateio;
+
+    return rateios;
+  }
+
+  gerarProvaReal() {
+    const provaReal = this.executar().provaReal;
+
+    return { provaReal };
   }
 
   private executar() {
@@ -44,7 +52,7 @@ export class GerarRateio {
       rateio[posicao] = +(primeiroItem + restante).toFixed(2);
     }
 
-    const novoRateio = +rateio.reduce((a, b) => a + b).toFixed(2);
+    const provaReal = +rateio.reduce((a, b) => a + b).toFixed(2);
 
     const rateioComParcela = rateio.map((item, i) => ({
       valor: item,
@@ -55,7 +63,7 @@ export class GerarRateio {
       valor,
       parcela,
       rateio,
-      novoRateio,
+      provaReal: valor === provaReal,
       rateioComParcela,
     };
   }

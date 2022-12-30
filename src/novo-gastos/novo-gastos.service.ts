@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Logger } from '@nestjs/common/services';
-import { InjectRepository, TypeOrmModule } from '@nestjs/typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { momentJs } from 'config/moment';
+import { DATES_FORMAT } from 'types';
 import { Repository } from 'typeorm';
 import { GerarRateio } from 'utils/gerarRateio';
 import { CreateNovoGastoDto } from './dto/create-novo-gasto.dto';
@@ -39,8 +41,13 @@ export class NovoGastosService {
   }
 
   async findAll() {
-    this.logger.debug('findAll');
-    return await this.novoGastosRepository.find();
+    const novosGastos = await this.novoGastosRepository.find();
+    return novosGastos.map((gasto, i) => ({
+      ...gasto,
+      dataMovimento: momentJs(gasto.dataMovimento)
+        .add(i + 1, 'months')
+        .format(DATES_FORMAT.BRL_FORMAT),
+    }));
   }
 
   findOne(id: number) {

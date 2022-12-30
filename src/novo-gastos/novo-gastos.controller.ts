@@ -17,8 +17,8 @@ export class NovoGastosController {
   }
 
   @Get()
-  findAll() {
-    return this.novoGastosService.findAll();
+  async findAll() {
+    return await this.novoGastosService.findAll();
   }
 
   @Get(':id')

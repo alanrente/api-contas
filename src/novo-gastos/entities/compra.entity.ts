@@ -8,4 +8,6 @@ export class Compra {
   valor: number;
   @Column({ type: 'integer' })
   parcelas: number;
+  @Column({ name: 'DATA_COMPRA', type: 'date', nullable: true })
+  dataCompra: string;
 }

@@ -1,8 +1,8 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'cartoes', synchronize: false })
 export class CartaoEntity {
-  @Column({ type: 'integer', name: 'id', primary: true, nullable: true })
+  @PrimaryColumn({ generated: 'increment' })
   id: number;
   @Column({ type: 'varchar' })
   nome: string;

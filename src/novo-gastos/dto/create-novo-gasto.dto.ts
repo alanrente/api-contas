@@ -1,4 +1,4 @@
-import { IsInt, IsNumber, IsOptional, IsPositive } from 'class-validator';
+import { IsInt, IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
 
 export class CreateNovoGastoDto {
   @IsNumber({ maxDecimalPlaces: 2 }, { message: ({ property }) => `${property} deve ser um número decimal` })
@@ -7,5 +7,8 @@ export class CreateNovoGastoDto {
   @IsOptional()
   @IsInt()
   @IsPositive()
-  parcela: number;
+  parcelas: number;
+
+  @IsString()
+  data_compra: string;
 }

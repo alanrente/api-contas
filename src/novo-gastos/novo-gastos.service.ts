@@ -9,6 +9,7 @@ import { CreateNovoGastoDto } from './dto/create-novo-gasto.dto';
 import { UpdateNovoGastoDto } from './dto/update-novo-gasto.dto';
 import { Compra } from './entities/compra.entity';
 import { NovoGasto } from './entities/novo-gasto.entity';
+import MessageResponse from 'utils/messageResponse';
 
 @Injectable()
 export class NovoGastosService {
@@ -21,30 +22,41 @@ export class NovoGastosService {
     this.logger = new Logger('NovoGastosService');
   }
   async create(createNovoGastoDto: CreateNovoGastoDto) {
-    this.logger.debug(createNovoGastoDto);
+    this.logger.debug(`[create]: ${JSON.stringify(createNovoGastoDto)}`);
 
-    return await this.compraRepository.manager.transaction(async () => {
-      const compra = await this.compraRepository.save({
-        parcelas: createNovoGastoDto.parcela,
-        valor: createNovoGastoDto.valor,
-      });
+    return await this.compraRepository.manager
+      .transaction(async () => {
+        this.logger.debug('[create]: >>>> Iniciando transaction');
+        const compra = await this.compraRepository.save({
+          ...createNovoGastoDto,
+          parcelas: createNovoGastoDto.parcelas,
+        });
 
-      const gerarRateio = new GerarRateio(createNovoGastoDto.valor, createNovoGastoDto.parcela);
-      const rateios = gerarRateio.gerarRateio();
+        const gerarRateio = new GerarRateio(createNovoGastoDto.valor, createNovoGastoDto.parcelas);
+        const rateios = gerarRateio.gerarRateio();
 
-      const parcelaComIDCompra = rateios.map((valor) => ({ valor, idCompra: compra.id }));
+        const rateioCompleto = rateios.map((valor, i) => ({
+          valor,
+          idCompra: compra.id,
+          dataLancamento: momentJs(compra.data_compra)
+            .add(i + 1, 'months')
+            .set('date', 1)
+            .format(DATES_FORMAT.DB),
+        }));
 
-      const novoGasto = await this.novoGastosRepository.save(parcelaComIDCompra);
+        const novoGasto = await this.novoGastosRepository.save(rateioCompleto);
 
-      return { compra, novoGasto };
-    });
+        return { compra, novoGasto };
+      })
+      .then((res) => new MessageResponse(res).success(201))
+      .catch((err) => new MessageResponse(err.message).internalError());
   }
 
   async findAll() {
     const novosGastos = await this.novoGastosRepository.find();
     return novosGastos.map((gasto, i) => ({
       ...gasto,
-      dataMovimento: momentJs(gasto.dataMovimento)
+      dataMovimento: momentJs(gasto.dataLancamento)
         .add(i + 1, 'months')
         .format(DATES_FORMAT.BRL_FORMAT),
     }));

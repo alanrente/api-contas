@@ -10,10 +10,9 @@ export class NovoGastosController {
 
   @Post()
   async create(@Body() createNovoGastoDto: CreateNovoGastoDto, @Res() res: Response) {
-    return this.novoGastosService
-      .create(createNovoGastoDto)
-      .then((result) => res.status(201).json(result))
-      .catch((err) => res.status(500).json(err));
+    const result = await this.novoGastosService.create(createNovoGastoDto);
+
+    return res.status(result.status).send(result);
   }
 
   @Get()

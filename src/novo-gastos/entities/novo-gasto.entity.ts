@@ -1,16 +1,16 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity({ name: 'NOVO_GASTOS', synchronize: true })
+@Entity({ name: 'LANCAMENTOS', synchronize: true })
 export class NovoGasto {
-  @PrimaryColumn({ generated: 'increment', name: 'ID_NOVO_GASTO' })
+  @PrimaryColumn({ generated: 'increment', name: 'ID_LANCAMENTO' })
   id: number;
 
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  @Column({ name: 'VALOR_MES', type: 'decimal', precision: 10, scale: 2 })
   valor: number;
 
-  @Column({ type: 'integer', nullable: true })
+  @Column({ name: 'FK_ID_COMPRA', type: 'integer', nullable: true })
   idCompra: number;
 
   @Column({ type: 'date', name: 'DATA_LANCAMENTO' })
-  dataMovimento: string;
+  dataLancamento: string;
 }

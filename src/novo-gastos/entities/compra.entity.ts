@@ -4,10 +4,10 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 export class Compra {
   @PrimaryColumn({ name: 'ID_COMPRA', generated: 'increment' })
   id: number;
-  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
+  @Column({ name: 'VALOR_COMPRA', type: 'decimal', precision: 10, scale: 2 })
   valor: number;
-  @Column({ type: 'integer' })
+  @Column({ name: 'PARCELAS', type: 'integer' })
   parcelas: number;
-  @Column({ name: 'DATA_COMPRA', type: 'date', nullable: true })
-  dataCompra: string;
+  @Column({ name: 'DATA_COMPRA', type: 'date' })
+  data_compra: string;
 }

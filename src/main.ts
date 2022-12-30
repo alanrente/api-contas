@@ -13,8 +13,10 @@ async function bootstrap() {
 
   await app.listen(port);
 
-  Logger.log(`Server running on ${process.env.LOCALHOST + port}`, 'Bootstrap');
-  Logger.log(`Environment: ${process.env.NODE_ENV}`, 'Bootstrap');
-  Logger.log(`Database: ${process.env.DB_HOST}`, 'Bootstrap');
+  const server = 'server';
+
+  Logger.log(`Server running on port: ${port}`, server);
+  Logger.log(`Environment: ${process.env.NODE_ENV}`, server);
+  Logger.log(`Database: ${process.env.DB_HOST}`, server);
 }
 bootstrap();

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Query } from '@nestjs/common';
 import { NovoGastosService } from './novo-gastos.service';
 import { CreateNovoGastoDto } from './dto/create-novo-gasto.dto';
 import { UpdateNovoGastoDto } from './dto/update-novo-gasto.dto';
@@ -7,6 +7,14 @@ import { Response } from 'express';
 @Controller('novo-gastos')
 export class NovoGastosController {
   constructor(private readonly novoGastosService: NovoGastosService) {}
+
+  @Get('fatura')
+  async getFaturaMes(@Query('anoMes') anoMes: string, @Res() res: Response) {
+    return this.novoGastosService
+      .faturaMes(anoMes)
+      .then((result) => res.status(result.status).send(result))
+      .catch((err) => res.status(500).send(err));
+  }
 
   @Post()
   async create(@Body() createNovoGastoDto: CreateNovoGastoDto, @Res() res: Response) {

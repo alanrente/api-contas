@@ -9,6 +9,7 @@ export function getDatabaseExportConfig(): TypeOrmModuleOptions {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     schema: process.env.DB_SCHEMA,
+    logging: 'all',
     entities: [__dirname + '/../**/*.entity.{js,ts}'],
     synchronize: true,
     // autoLoadEntities: true,

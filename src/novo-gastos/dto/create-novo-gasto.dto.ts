@@ -11,4 +11,7 @@ export class CreateNovoGastoDto {
 
   @IsString()
   data_compra: string;
+
+  @IsInt()
+  cartaoId: number;
 }

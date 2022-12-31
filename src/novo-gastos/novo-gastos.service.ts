@@ -3,14 +3,14 @@ import { Logger } from '@nestjs/common/services';
 import { InjectRepository } from '@nestjs/typeorm';
 import { momentJs } from 'config/moment';
 import { DATES_FORMAT } from 'types';
-import { Between, FindOperator, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { GerarRateio } from 'utils/gerarRateio';
 import { CreateNovoGastoDto } from './dto/create-novo-gasto.dto';
 import { UpdateNovoGastoDto } from './dto/update-novo-gasto.dto';
 import { Compra } from './entities/compra.entity';
 import { NovoGasto } from './entities/novo-gasto.entity';
 import MessageResponse from 'utils/messageResponse';
-import { relativeTimeThreshold } from 'moment';
+import { CartaoEntity } from 'cartoes/entities/cartao.entity';
 
 @Injectable()
 export class NovoGastosService {
@@ -27,8 +27,13 @@ export class NovoGastosService {
 
     return await this.compraRepository.manager
       .transaction(async () => {
+        const cartao = await this.novoGastosRepository.manager
+          .getRepository(CartaoEntity)
+          .findOne({ where: { id: createNovoGastoDto.cartaoId } });
+
         const compra = await this.compraRepository.save({
           ...createNovoGastoDto,
+          cartao: cartao,
           parcelas: createNovoGastoDto.parcelas || 1,
         });
 
@@ -46,7 +51,7 @@ export class NovoGastosService {
 
         const novoGasto = await this.novoGastosRepository.save(rateioCompleto);
 
-        return { ...compra, parcelas: novoGasto };
+        return { id_compra: compra.id, valor: compra.valor, data_compra: compra.data_compra, parcelas: novoGasto };
       })
       .then((res) => new MessageResponse(res).success(201))
       .catch((err) => new MessageResponse(err.message).internalError());
@@ -67,7 +72,7 @@ export class NovoGastosService {
   }
 
   update(id: number, updateNovoGastoDto: UpdateNovoGastoDto) {
-    return `This action updates a #${id} novoGasto`;
+    return `This action updates a #${updateNovoGastoDto} novoGasto`;
   }
 
   remove(id: number) {

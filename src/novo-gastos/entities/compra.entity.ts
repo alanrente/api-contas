@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { CartaoEntity } from 'cartoes/entities/cartao.entity';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'COMPRA' })
 export class Compra {
@@ -10,4 +11,7 @@ export class Compra {
   parcelas: number;
   @Column({ name: 'DATA_COMPRA', type: 'date' })
   data_compra: string;
+
+  @ManyToOne(() => CartaoEntity, (cartaoEntity) => cartaoEntity.compras, { nullable: false })
+  cartao: CartaoEntity;
 }

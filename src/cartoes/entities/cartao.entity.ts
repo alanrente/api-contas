@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Compra } from 'novo-gastos/entities/compra.entity';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'cartoes', synchronize: false })
 export class CartaoEntity {
@@ -12,4 +13,7 @@ export class CartaoEntity {
   final_numero: string;
   @Column({ type: 'varchar', nullable: true })
   obs: string;
+
+  @OneToMany(() => Compra, (compra) => compra.cartao)
+  compras: Compra[];
 }

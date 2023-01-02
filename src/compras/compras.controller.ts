@@ -1,12 +1,12 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Query } from '@nestjs/common';
-import { NovoGastosService } from './novo-gastos.service';
+import { CompraService } from './compras.service';
 import { CreateNovoGastoDto } from './dto/create-novo-gasto.dto';
 import { UpdateNovoGastoDto } from './dto/update-novo-gasto.dto';
 import { Response } from 'express';
 
 @Controller('novo-gastos')
-export class NovoGastosController {
-  constructor(private readonly novoGastosService: NovoGastosService) {}
+export class CompraController {
+  constructor(private readonly novoGastosService: CompraService) {}
 
   @Get('fatura')
   async getFaturaMes(@Query('anoMes') anoMes: string, @Res() res: Response) {

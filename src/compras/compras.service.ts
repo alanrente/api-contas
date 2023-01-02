@@ -14,7 +14,7 @@ import { CartaoEntity } from 'cartoes/entities/cartao.entity';
 import { PessoaEntity } from 'pessoas/entities/pessoa.entity';
 
 @Injectable()
-export class NovoGastosService {
+export class CompraService {
   private logger: Logger;
 
   constructor(

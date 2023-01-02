@@ -10,7 +10,7 @@ import { PessoasModule } from './pessoas/pessoas.module';
 import { GastosModule } from './gastos/gastos.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { NovoGastosModule } from './novo-gastos/novo-gastos.module';
+import { ComprasModule } from 'compras/compras.module';
 
 @Module({
   imports: [
@@ -21,7 +21,7 @@ import { NovoGastosModule } from './novo-gastos/novo-gastos.module';
     GastosModule,
     AuthModule,
     UsersModule,
-    NovoGastosModule,
+    ComprasModule,
   ],
   controllers: [AppController],
   providers: [],

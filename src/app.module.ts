@@ -1,5 +1,5 @@
 import { AppController } from './app.controller';
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { CartoesModule } from './cartoes/cartoes.module';
 
 import { ConfigModule } from '@nestjs/config';
@@ -24,7 +24,7 @@ import { ComprasModule } from 'compras/compras.module';
     ComprasModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [Logger],
 })
 export class AppModule {
   constructor(private dataSource: DataSource) {}

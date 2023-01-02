@@ -16,6 +16,11 @@ export class NovoGastosController {
       .catch((err) => res.status(500).send(err));
   }
 
+  @Get('compras')
+  async getCompras() {
+    return this.novoGastosService.findAllBuys();
+  }
+
   @Post()
   async create(@Body() createNovoGastoDto: CreateNovoGastoDto, @Res() res: Response) {
     const result = await this.novoGastosService.create(createNovoGastoDto);

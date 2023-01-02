@@ -63,13 +63,36 @@ export class NovoGastosService {
       .catch((err) => new MessageResponse(err.message).internalError());
   }
 
+  async findAllBuys() {
+    const compras = await this.compraRepository.find({
+      relations: { pessoa: true, cartao: true },
+      select: {
+        pessoa: {
+          nome: true,
+        },
+        cartao: {
+          nome: true,
+          final_numero: true,
+        },
+      },
+    });
+
+    return compras.map(({ cartao, data_compra, id, parcelas, pessoa, valor }) => ({
+      id,
+      valor: +valor,
+      parcelas,
+      data_compra,
+      pessoa: pessoa.nome,
+      cartao: cartao.nome,
+      numero: cartao.final_numero,
+    }));
+  }
+
   async findAll() {
     const novosGastos = await this.novoGastosRepository.find();
-    return novosGastos.map((gasto, i) => ({
+    return novosGastos.map((gasto) => ({
       ...gasto,
-      dataMovimento: momentJs(gasto.dataLancamento)
-        .add(i + 1, 'months')
-        .format(DATES_FORMAT.BRL.DEFAULT),
+      valor: +gasto.valor,
     }));
   }
 

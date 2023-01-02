@@ -8,16 +8,17 @@ import { GerarRateio } from 'utils/gerarRateio';
 import { CreateNovoGastoDto } from './dto/create-novo-gasto.dto';
 import { UpdateNovoGastoDto } from './dto/update-novo-gasto.dto';
 import { Compra } from './entities/compra.entity';
-import { NovoGasto } from './entities/novo-gasto.entity';
+import { Lancamentos } from './entities/lancamentos.entity';
 import MessageResponse from 'utils/messageResponse';
 import { CartaoEntity } from 'cartoes/entities/cartao.entity';
+import { PessoaEntity } from 'pessoas/entities/pessoa.entity';
 
 @Injectable()
 export class NovoGastosService {
   private logger: Logger;
 
   constructor(
-    @InjectRepository(NovoGasto) private novoGastosRepository: Repository<NovoGasto>,
+    @InjectRepository(Lancamentos) private novoGastosRepository: Repository<Lancamentos>,
     @InjectRepository(Compra) private compraRepository: Repository<Compra>,
   ) {
     this.logger = new Logger('NovoGastosService');
@@ -31,9 +32,14 @@ export class NovoGastosService {
           .getRepository(CartaoEntity)
           .findOne({ where: { id: createNovoGastoDto.cartaoId } });
 
+        const pessoa = await this.novoGastosRepository.manager
+          .getRepository(PessoaEntity)
+          .findOne({ where: { id: createNovoGastoDto.pessoaId } });
+
         const compra = await this.compraRepository.save({
           ...createNovoGastoDto,
           cartao: cartao,
+          pessoa: pessoa,
           parcelas: createNovoGastoDto.parcelas || 1,
         });
 

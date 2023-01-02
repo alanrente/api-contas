@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'LANCAMENTOS', synchronize: true })
-export class NovoGasto {
+export class Lancamentos {
   @PrimaryColumn({ generated: 'increment', name: 'ID_LANCAMENTO' })
   id: number;
 

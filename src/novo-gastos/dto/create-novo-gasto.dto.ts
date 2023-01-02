@@ -14,4 +14,7 @@ export class CreateNovoGastoDto {
 
   @IsInt()
   cartaoId: number;
+
+  @IsInt()
+  pessoaId: number;
 }

@@ -1,4 +1,4 @@
-import { Compra } from 'novo-gastos/entities/compra.entity';
+import { Compra } from 'compras/entities/compra.entity';
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'cartoes', synchronize: false })

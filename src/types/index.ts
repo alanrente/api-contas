@@ -6,3 +6,8 @@ export const DATES_FORMAT = {
     ANO_MES: 'MM/YYYY',
   },
 };
+
+export enum Role {
+  ADMIN = 'admin',
+  USER = 'user',
+}

@@ -13,14 +13,14 @@ export class AppController {
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req) {
-    this.log.debug('[login]');
+    this.log.debug('login');
     return this.authService.login(req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {
-    this.log.debug('[getProfile]');
+    this.log.debug('getProfile');
     return req.user;
   }
 }

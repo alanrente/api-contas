@@ -1,8 +1,9 @@
-import { Column, Entity } from 'typeorm';
+import { Compra } from 'compras/entities/compra.entity';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'cartoes', synchronize: false })
 export class CartaoEntity {
-  @Column({ type: 'integer', name: 'id', primary: true, nullable: true })
+  @PrimaryColumn({ generated: 'increment' })
   id: number;
   @Column({ type: 'varchar' })
   nome: string;
@@ -12,4 +13,7 @@ export class CartaoEntity {
   final_numero: string;
   @Column({ type: 'varchar', nullable: true })
   obs: string;
+
+  @OneToMany(() => Compra, (compra) => compra.cartao)
+  compras: Compra[];
 }

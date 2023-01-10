@@ -1,8 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Logger } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Logger, UseGuards } from '@nestjs/common';
 import { PessoasService } from './pessoas.service';
 import { CreatePessoaDto } from './dto/create-pessoa.dto';
 import { UpdatePessoaDto } from './dto/update-pessoa.dto';
 import { Response } from 'express';
+import { Roles } from 'decorators/roles.decorator';
+import { Role } from 'types';
+import { JwtAuthGuard } from 'auth/guard/jwt-auth.guard';
+import { RolesGuard } from 'auth/guard/roles.guard';
 
 @Controller('pessoas')
 export class PessoasController {
@@ -21,6 +25,8 @@ export class PessoasController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
   findAll() {
     return this.pessoasService.findAll();
   }

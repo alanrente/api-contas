@@ -1,9 +1,11 @@
-import { Optional } from '@nestjs/common';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreateCartoeDto {
   nome: string;
   final_numero: string;
   dia_vencimento: number;
-  @Optional()
+
+  @IsOptional()
+  @IsString()
   obs: string;
 }

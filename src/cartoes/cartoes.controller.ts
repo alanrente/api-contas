@@ -6,16 +6,23 @@ import { UpdateCartoeDto } from './dto/update-cartoe.dto';
 
 @Controller('cartoes')
 export class CartoesController {
-  constructor(private readonly cartoesService: CartoesService) {}
+  private log: Logger;
+  constructor(private readonly cartoesService: CartoesService) {
+    this.log = new Logger('CartoesController');
+  }
 
   @Post()
-  create(@Body() createCartoeDto: CreateCartoeDto) {
-    return this.cartoesService.create(createCartoeDto);
+  async create(@Body() createCartoeDto: CreateCartoeDto, @Res() res: Response) {
+    this.log.debug('CreateCartoeDto:', JSON.stringify(createCartoeDto));
+    return await this.cartoesService
+      .create(createCartoeDto)
+      .then((result) => res.status(201).json(result))
+      .catch((err) => res.status(500).json(err));
   }
 
   @Get()
   findAll() {
-    // TODO: Implementar
+    this.log.debug('findAll');
     return this.cartoesService.findAll();
   }
 
@@ -43,7 +50,7 @@ export class CartoesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cartoesService.remove(+id);
+  async remove(@Param('id') id: string, @Res() resp: Response) {
+    return await this.cartoesService.remove(+id).then((res) => resp.status(res.status).send(res));
   }
 }

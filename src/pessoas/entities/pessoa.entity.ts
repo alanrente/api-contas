@@ -1,4 +1,5 @@
-import { Column, Entity } from 'typeorm';
+import { Compra } from 'compras/entities/compra.entity';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity({ name: 'pessoas', synchronize: false })
 export class PessoaEntity {
@@ -10,4 +11,9 @@ export class PessoaEntity {
   apelido: string;
   @Column({ type: 'varchar', nullable: true })
   telefone: string;
+  @Column({ type: 'varchar', nullable: true })
+  email: string;
+
+  @OneToMany(() => Compra, (compra) => compra.pessoa)
+  compras: Compra[];
 }

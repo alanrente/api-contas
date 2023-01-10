@@ -1,5 +1,5 @@
 import { Optional } from '@nestjs/common';
-import { IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class CreatePessoaDto {
   @IsNotEmpty()
@@ -8,4 +8,6 @@ export class CreatePessoaDto {
   apelido: string;
   @Optional()
   telefone: string;
+  @IsEmail()
+  email: string;
 }

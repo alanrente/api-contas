@@ -1,21 +1,34 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Logger } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, Logger, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'auth/guard/jwt-auth.guard';
+import { RolesGuard } from 'auth/guard/roles.guard';
+import { Roles } from 'decorators/roles.decorator';
 import { Response } from 'express';
+import { Role } from 'types';
 import { CartoesService } from './cartoes.service';
 import { CreateCartoeDto } from './dto/create-cartoe.dto';
 import { UpdateCartoeDto } from './dto/update-cartoe.dto';
 
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.ADMIN)
 @Controller('cartoes')
 export class CartoesController {
-  constructor(private readonly cartoesService: CartoesService) {}
+  private log: Logger;
+  constructor(private readonly cartoesService: CartoesService) {
+    this.log = new Logger('CartoesController');
+  }
 
   @Post()
-  create(@Body() createCartoeDto: CreateCartoeDto) {
-    return this.cartoesService.create(createCartoeDto);
+  async create(@Body() createCartoeDto: CreateCartoeDto, @Res() res: Response) {
+    this.log.debug('CreateCartoeDto:', JSON.stringify(createCartoeDto));
+    return await this.cartoesService
+      .create(createCartoeDto)
+      .then((result) => res.status(201).json(result))
+      .catch((err) => res.status(500).json(err));
   }
 
   @Get()
   findAll() {
-    // TODO: Implementar
+    this.log.debug('findAll');
     return this.cartoesService.findAll();
   }
 
@@ -43,7 +56,7 @@ export class CartoesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cartoesService.remove(+id);
+  async remove(@Param('id') id: string, @Res() resp: Response) {
+    return await this.cartoesService.remove(+id).then((res) => resp.status(res.status).send(res));
   }
 }

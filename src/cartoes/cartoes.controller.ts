@@ -7,7 +7,9 @@ import { Role } from 'types';
 import { CartoesService } from './cartoes.service';
 import { CreateCartoeDto } from './dto/create-cartoe.dto';
 import { UpdateCartoeDto } from './dto/update-cartoe.dto';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('cartoes')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(Role.ADMIN)
 @Controller('cartoes')
@@ -18,6 +20,7 @@ export class CartoesController {
   }
 
   @Post()
+  @ApiBody({ type: CreateCartoeDto })
   async create(@Body() createCartoeDto: CreateCartoeDto, @Res() res: Response) {
     this.log.debug('CreateCartoeDto:', JSON.stringify(createCartoeDto));
     return await this.cartoesService

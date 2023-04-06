@@ -1,7 +1,9 @@
 import { Controller, Get, Logger, Post, Request, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { AuthService } from 'auth/auth.service';
 import { JwtAuthGuard } from 'auth/guard/jwt-auth.guard';
 import { LocalAuthGuard } from 'auth/guard/local-auth.guard';
+import { UserLogin } from 'types';
 
 @Controller()
 export class AppController {
@@ -10,6 +12,9 @@ export class AppController {
     this.log = new Logger('AppController');
   }
 
+  @ApiBody({
+    type: UserLogin,
+  })
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req) {
@@ -17,6 +22,7 @@ export class AppController {
     return this.authService.login(req.user);
   }
 
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req) {

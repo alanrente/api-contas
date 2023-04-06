@@ -9,6 +9,7 @@ async function bootstrap() {
   const configApi = new DocumentBuilder()
     .setTitle('Api contas')
     .setDescription('Api para integrar com o aplicativo Contas')
+    .addBearerAuth()
     .build();
 
   const documentApi = SwaggerModule.createDocument(app, configApi);

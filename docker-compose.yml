@@ -1,0 +1,11 @@
+services:
+  contas:
+    container_name: contas
+    restart: always
+    build: 
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "4000:${PORT}"
+    env_file:
+      - .env

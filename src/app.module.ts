@@ -22,6 +22,7 @@ import { PublicModule } from 'public/public.module';
     GastosModule,
     AuthModule,
     UsersModule,
+    PublicModule,
   ],
   controllers: [AppController],
   providers: [Logger],

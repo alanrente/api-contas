@@ -21,7 +21,7 @@ const pessoas_module_1 = require("./pessoas/pessoas.module");
 const gastos_module_1 = require("./gastos/gastos.module");
 const auth_module_1 = require("./auth/auth.module");
 const users_module_1 = require("./users/users.module");
-const compras_module_1 = require("./compras/compras.module");
+const public_module_1 = require("./public/public.module");
 let AppModule = class AppModule {
     constructor(dataSource) {
         this.dataSource = dataSource;
@@ -37,7 +37,7 @@ AppModule = __decorate([
             gastos_module_1.GastosModule,
             auth_module_1.AuthModule,
             users_module_1.UsersModule,
-            compras_module_1.ComprasModule,
+            public_module_1.PublicModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [common_1.Logger],

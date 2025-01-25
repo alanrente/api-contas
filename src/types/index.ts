@@ -12,6 +12,7 @@ export const DATES_FORMAT = {
 export enum Role {
   ADMIN = 'admin',
   USER = 'user',
+  NONE = 'none',
 }
 
 export class UserLogin {

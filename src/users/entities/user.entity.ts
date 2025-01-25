@@ -1,19 +1,20 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Role } from 'types';
 
 @Entity({ name: 'USUARIO' })
 export class User {
   @PrimaryColumn({ generated: 'increment', name: 'ID_USUARIO' })
-  id: number;
+  id?: number;
 
   @Column({ name: 'EMAIL', type: 'varchar', length: 255, unique: true })
   email: string;
 
-  @Column({ name: 'NOME_USUARIO', type: 'varchar', length: 255 })
-  nome: string;
+  @Column({ name: 'NOME_USUARIO', type: 'varchar', length: 255, nullable: true })
+  nome?: string;
 
-  @Column({ type: 'varchar', name: 'GOOGLE_UID', nullable: true })
+  @Column({ type: 'varchar', name: 'GOOGLE_UID' })
   googleUid: string;
 
-  @Column({ name: 'ROLE', type: 'varchar' })
-  role: string;
+  @Column({ name: 'ROLE', type: 'varchar', default: 'none' })
+  role: Role;
 }

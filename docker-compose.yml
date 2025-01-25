@@ -6,6 +6,10 @@ services:
       context: .
       dockerfile: dockerfile
     ports:
-      - "4000:${PORT}"
+      - "${PORT}:${PORT}"
+    expose:
+      - "${PORT}"
     env_file:
       - .env
+    volumes:
+      - .:/app:rw

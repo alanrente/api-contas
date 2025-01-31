@@ -9,11 +9,11 @@ export class GastosEntity {
   // @Column({ type: 'integer' })
   @OneToOne(() => PessoaEntity)
   @JoinColumn({ name: 'pessoa_id' })
-  pessoa_id: number;
+  pessoa: PessoaEntity;
   // @Column({ type: 'integer' })
   @OneToOne(() => CartaoEntity)
   @JoinColumn({ name: 'cartao_id' })
-  cartao_id: number;
+  cartao: CartaoEntity;
   @Column({ type: 'varchar', nullable: true })
   descricao: string;
   @Column({ type: 'timestamp' })

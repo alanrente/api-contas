@@ -88,6 +88,46 @@ export class CompraService {
     }));
   }
 
+  async findLancamentos(user: string, ano?: string, mes?: string) {
+    const anoMes = `${ano}-${mes}`;
+    const dataInicio = ano && mes ? momentJs(`${anoMes}-01`) : momentJs().startOf('month');
+    const dataFim = dataInicio.clone().endOf('month').format('YYYY-MM-DD');
+
+    const lancamentos = await this.novoGastosRepository
+      .createQueryBuilder('lc')
+      .innerJoinAndSelect('lc.compra', 'c')
+      .innerJoinAndSelect('c.pessoa', 'p')
+      .innerJoinAndSelect('c.cartao', 'card')
+      .where('lc.dataLancamento >= :dataInicio', { dataInicio: dataInicio.format('YYYY-MM-DD') })
+      .andWhere('lc.dataLancamento <= :dataFim', { dataFim: dataFim })
+      .andWhere('p.email = :email', { email: user })
+      .getMany();
+
+    const novosLancamentos = lancamentos.map((lancamento) => ({
+      valorLancamento: +lancamento.valor,
+      dataLancamento: lancamento.dataLancamento,
+      // valorCompra: +lancamento.compra.valor,
+      // parcelasCompra: lancamento.compra.parcelas,
+      dataCompra: lancamento.compra.data_compra,
+      cartao: lancamento.compra.cartao.nome,
+      // ultimosDigitos: lancamento.compra.cartao.final_numero,
+      // pessoaNome: lancamento.compra.pessoa.nome,
+      // pessoaEmail: lancamento.compra.pessoa.email,
+    }));
+
+    return novosLancamentos;
+  }
+
+  async findCompras() {
+    return await this.compraRepository
+      .createQueryBuilder('compra')
+      .innerJoinAndSelect('compra.lancamentos', 'lc')
+      .innerJoinAndSelect('compra.cartao', 'c')
+      .innerJoinAndSelect('compra.pessoa', 'p')
+      .where('compra.pessoaId = :idPessoa', { idPessoa: 8 })
+      .getMany();
+  }
+
   async findAll() {
     const novosGastos = await this.novoGastosRepository.find();
     return novosGastos.map((gasto) => ({

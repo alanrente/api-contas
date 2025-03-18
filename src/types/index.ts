@@ -1,3 +1,5 @@
+import { ApiProperty } from '@nestjs/swagger';
+
 export const DATES_FORMAT = {
   DB: 'YYYY-MM-DD',
   ANO_MES: 'YYYY-MM',
@@ -10,4 +12,11 @@ export const DATES_FORMAT = {
 export enum Role {
   ADMIN = 'admin',
   USER = 'user',
+}
+
+export class UserLogin {
+  @ApiProperty()
+  username: string;
+  @ApiProperty()
+  googleUid: string;
 }

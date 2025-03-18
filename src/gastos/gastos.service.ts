@@ -42,8 +42,8 @@ export class GastosService {
       .getRepository(GastosEntity)
       .createQueryBuilder('gasto')
       .select(['gasto', 'pessoa.nome', 'cartao.nome', 'cartao.id'])
-      .leftJoin('gasto.pessoa_id', 'pessoa')
-      .leftJoin('gasto.cartao_id', 'cartao')
+      .leftJoin('gasto.pessoa', 'pessoa')
+      .leftJoin('gasto.cartao', 'cartao')
       .getMany();
 
     // return await this.dataSource
